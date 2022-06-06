@@ -48,6 +48,7 @@ public class MealTo {
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 ", excess=" + excess +
+                ", id=" + id +
                 '}';
     }
 }

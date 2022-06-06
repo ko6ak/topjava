@@ -8,5 +8,5 @@ public interface MealsDAO {
     void addMeal(Meal meal);
     List<Meal> getAllMeals();
     void updateMeal(Meal meal);
-    void deleteMeal(Meal meal);
+    void deleteMeal(int id);
 }
