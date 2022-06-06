@@ -18,10 +18,14 @@
         <th>Calories</th>
     </tr>
     <c:forEach var="mealTo" items="${mealsTo}">
+<%--        <c:url var="updateButton" value="/updateInfo"><c:param name="empId" value="${emp.id}"/></c:url>--%>
+<%--        <c:url var="deleteButton" value="/deleteEmployee"><c:param name="empId" value="${emp.id}"/></c:url>--%>
         <tr style="${mealTo.excess ? "color: red" : "color : green"}">
             <td><c:out value="${mealTo.dateTime.format(formatter)}"/></td>
             <td><c:out value="${mealTo.description}"/></td>
             <td><c:out value="${mealTo.calories}"/></td>
+<%--            <td><a href="index.html" onclick="window.location.href='${updateButton}'">Update</a></td>--%>
+            <td><a href="meals?id=${mealTo.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
