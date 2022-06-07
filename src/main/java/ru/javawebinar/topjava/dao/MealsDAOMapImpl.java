@@ -14,23 +14,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MealsDAOMapImpl implements MealsDAO{
     private AtomicInteger count;
     private Map<Integer, Meal> data;
+    private List<Meal> meals = Arrays.asList(
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
+    );
 
     public MealsDAOMapImpl() {
         count = new AtomicInteger();
         data = new ConcurrentHashMap<>();
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
-        data.put(count.incrementAndGet(), new Meal(count.get(), LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
+        meals.forEach(this::addMeal);
     }
 
     @Override
     public void addMeal(Meal meal) {
+        meal.setId(count.incrementAndGet());
+        data.put(count.get(), meal);
+    }
+
+    @Override
+    public void updateMeal(Meal meal) {
         data.put(meal.getId(), meal);
-        System.out.println(meal.getDescription());
     }
 
     @Override
@@ -39,7 +47,7 @@ public class MealsDAOMapImpl implements MealsDAO{
     }
 
     @Override
-    public Meal updateMeal(int id) {
+    public Meal getMeal(int id) {
         return data.get(id);
     }
 

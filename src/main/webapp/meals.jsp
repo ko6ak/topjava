@@ -18,6 +18,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<a href="add_edit_form.jsp">Add meal</a><br><br>
 <table>
     <tr>
         <th>Date</th>

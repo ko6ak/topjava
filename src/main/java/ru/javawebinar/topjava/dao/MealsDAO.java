@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface MealsDAO {
     void addMeal(Meal meal);
+    void updateMeal(Meal meal);
     List<Meal> getAllMeals();
-    Meal updateMeal(int id);
+    Meal getMeal(int id);
     void deleteMeal(int id);
 }
