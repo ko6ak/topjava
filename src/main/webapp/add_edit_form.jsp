@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html lang="ru">
 <head>
     <title>Meals</title>
@@ -8,33 +9,21 @@
 <form action="meals" method="POST">
     <table>
         <tr>
-            <td style="width: 100px">DateTime: </td>
-            <td><input name="dateTime" type="datetime-local" style="width: 200px" /></td>
+            <td style="width: 150px">DateTime: </td>
+            <td><input name="dateTime" type="datetime-local" style="width: 200px" value="${meal.dateTime}"/></td>
         </tr>
         <tr>
             <td>Description: </td>
-            <td><input name="description" style="width: 200px" /></td>
+            <td><input name="description" style="width: 300px" value="${meal.description}"/></td>
         </tr>
         <tr>
             <td>Calories: </td>
-            <td><input name="calories" style="width: 200px" /></td>
+            <td><input name="calories" style="width: 200px" value="${meal.calories}"/></td>
         </tr>
     </table>
-
-<%--    Name: <input name="name" /><br><br>--%>
-<%--    Age: <input name="age" /><br><br>--%>
-<%--    Gender: <input type="radio" name="gender" value="female"--%>
-<%--                   checked />Female--%>
-<%--    <input type="radio" name="gender" value="male" />Male<br><br>--%>
-<%--    Country: <select name="country"><option>France</option>--%>
-<%--    <option>Germany</option></select><br><br>--%>
-<%--    Courses:--%>
-<%--    <input type="checkbox" name="courses" value="JavaSE"--%>
-<%--           checked />Java SE--%>
-<%--    <input type="checkbox" name="courses" value="JavaEE" />Java EE--%>
-<%--    <br><br>--%>
+    <input type="hidden" name="id" value="${meal.id}">
     <input type="submit" value="Submit" />
-    <input type="reset" value="Reset" />
+    <input type="button" onclick="window.location.replace('meals')" value="Cancel"/>
 </form>
 </body>
 </html>

@@ -29,7 +29,8 @@ public class MealsDAOMapImpl implements MealsDAO{
 
     @Override
     public void addMeal(Meal meal) {
-
+        data.put(meal.getId(), meal);
+        System.out.println(meal.getDescription());
     }
 
     @Override
@@ -38,8 +39,8 @@ public class MealsDAOMapImpl implements MealsDAO{
     }
 
     @Override
-    public void updateMeal(Meal meal) {
-
+    public Meal updateMeal(int id) {
+        return data.get(id);
     }
 
     @Override

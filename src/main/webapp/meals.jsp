@@ -7,8 +7,10 @@
 <head>
     <title>Meals</title>
     <style>
-        table {
-            border: 1px solid black;
+        table, th, tr, td {
+            border: 2px solid grey;
+            border-collapse: collapse;
+            padding: 5px 5px;
         }
     </style>
 </head>
