@@ -28,10 +28,10 @@ public class SpringMain {
 //        System.out.println("--------------------");
 //        System.out.println(mealRestController.get(4));
 //        System.out.println("--------------------");
-//        System.out.println(mealRestController.create(new Meal(3, null, LocalDateTime.now(), "desc", 3000)));
+//        System.out.println(mealRestController.create(new Meal(null, null, LocalDateTime.now(), "desc", 3000)));
 //        System.out.println(mealRestController.getAll());
 //        System.out.println("--------------------");
-//        mealRestController.update(new Meal(LocalDateTime.now(), "dsljkfhgh", 800), 7);
+//        mealRestController.update(new Meal(null, null, LocalDateTime.now(), "dsljkfhgh", 800), 7);
 //        System.out.println(mealRestController.getAll());
 //        System.out.println("--------------------");
 //        mealRestController.delete(6);

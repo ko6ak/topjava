@@ -43,7 +43,7 @@ public class ValidationUtil {
     }
 
     public static Meal checkUserId(Meal meal, int userId){
-        if (meal.getUserId() != userId) throw new NotFoundException("Bad userId");
+        if (meal.getUserId() != userId) throw new NotFoundException("Not found entity");
         return meal;
     }
 }
