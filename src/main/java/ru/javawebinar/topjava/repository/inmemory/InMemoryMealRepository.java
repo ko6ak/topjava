@@ -22,18 +22,19 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(this::save);
+//        MealsUtil.meals.forEach(meal -> meal.setUserId(3));
     }
 
     @Override
     public Meal save(Meal meal) {
-        if (meal.getUserId() != userId) return null;
         if (meal.isNew()) {
+            meal.setUserId(userId);
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return repository.get(meal.getId()).getUserId() == userId ? repository.computeIfPresent(meal.getId(), (id, oldMeal) -> { meal.setUserId(userId); return meal; }) : null;
     }
 
     @Override
@@ -44,8 +45,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id) {
-        Meal meal = repository.get(id);
-        return meal.getUserId() == userId ? meal : null;
+        return repository.get(id);
     }
 
     @Override
