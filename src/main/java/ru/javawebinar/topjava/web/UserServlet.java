@@ -18,7 +18,6 @@ public class UserServlet extends HttpServlet {
         log.debug("forward to users");
         String s = request.getParameter("id");
         SecurityUtil.setAuthUserId(Integer.parseInt(s));
-        System.out.println(SecurityUtil.authUserId());
         request.setAttribute("id", s);
         request.getRequestDispatcher("/users.jsp").forward(request, response);
     }
