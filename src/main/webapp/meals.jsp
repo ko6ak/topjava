@@ -21,6 +21,25 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
+
+    <form method="post" action="meals">
+        <table>
+            <tr>
+                <td>from date (inc.):</td>
+                <td><input type="date" name="fromDate" value="${fromDate}"></td>
+                <td>to date (inc.):</td>
+                <td><input type="date" name="toDate" value="${toDate}"></td>
+                <td>from time (inc.):</td>
+                <td><input type="time" name="fromTime" value="${fromTime}"></td>
+                <td>to time (exc.):</td>
+                <td><input type="time" name="toTime" value="${toTime}"></td>
+                <input type="hidden" name="action" value="filter">
+            </tr>
+        </table>
+        <button type="submit">Filter!</button>
+        <button onclick="window.location.replace('meals')" type="button">Cancel</button>
+    </form>
+
     <a href="meals?action=create">Add Meal</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
