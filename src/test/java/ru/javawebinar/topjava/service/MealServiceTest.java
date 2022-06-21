@@ -21,7 +21,6 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.*;
 import static ru.javawebinar.topjava.MealTestData.assertMatch;
 
-
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
@@ -71,7 +70,10 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenInclusive() {
-
+        List<Meal> meals = service.getBetweenInclusive(startDate, endDate, USER_ID);
+        assertMatch(meals, userFilteredDateMeals);
+        List<Meal> nullMeals = service.getBetweenInclusive(null, null, USER_ID);
+        assertMatch(nullMeals, userMeals);
     }
 
     @Test
