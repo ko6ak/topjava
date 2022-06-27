@@ -17,6 +17,8 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.time.LocalDateTime.of;
+
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
@@ -35,7 +37,11 @@ public class SpringMain {
 //            System.out.println();
 //            System.out.println(mealController.getBetween(null, null, null, null));
 
-            mealController.update(new Meal(LocalDateTime.now(), "qw", 3333), 100005);
+            Meal m = new Meal(LocalDateTime.of(2021, Month.JANUARY, 12, 10, 0), "Завтрак", 500);
+            Meal m1 = new Meal(LocalDateTime.of(2021, Month.JANUARY, 12, 10, 0), "sadsad", 555);
+            System.out.println(mealController.create(m));
+            System.out.println(mealController.create(m1));
+
             System.out.println(mealController.getAll());
         }
     }

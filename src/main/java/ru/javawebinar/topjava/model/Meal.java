@@ -3,18 +3,20 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "meals")
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
 public class Meal extends AbstractBaseEntity {
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
+    @Size(max = 128)
     private String description;
 
     @Column(name = "calories", nullable = false)
