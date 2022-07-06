@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.repository.MealRepositoryForDataJpa;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +18,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class MealService {
 
     private final MealRepository repository;
+    private final MealRepositoryForDataJpa DataJpaRepository;
 
-    public MealService(MealRepository repository) {
+    public MealService(MealRepository repository, MealRepositoryForDataJpa dataJpaRepository) {
         this.repository = repository;
+        DataJpaRepository = dataJpaRepository;
     }
 
     public Meal get(int id, int userId) {
@@ -46,5 +49,9 @@ public class MealService {
     public Meal create(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
         return repository.save(meal, userId);
+    }
+
+    public Meal getWithUser(int id, int userId){
+        return checkNotFoundWithId(DataJpaRepository.getWithUser(id, userId), id);
     }
 }
