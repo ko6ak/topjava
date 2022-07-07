@@ -126,6 +126,14 @@ public class User extends AbstractNamedEntity {
         return password;
     }
 
+    public void setMeals(List<Meal> meals){
+        this.meals = meals == null ? new ArrayList<>() : meals;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
+    }
+
     @Override
     public String toString() {
         return "User{" +

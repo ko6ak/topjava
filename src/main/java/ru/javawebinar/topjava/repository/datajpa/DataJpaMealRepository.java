@@ -1,15 +1,17 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.MealRepositoryForDataJpa;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class DataJpaMealRepository implements MealRepositoryForDataJpa {
+public class DataJpaMealRepository implements MealRepository {
 
     private final CrudMealRepository crudRepository;
     private final CrudUserRepository crudUserRepository;
@@ -32,8 +34,12 @@ public class DataJpaMealRepository implements MealRepositoryForDataJpa {
     }
 
     @Override
+    @Transactional
     public Meal get(int id, int userId) {
-        return crudRepository.getByIdAndUserId(id, userId);
+        Meal meal = crudRepository.getByIdAndUserId(id, userId);
+        Optional<User> optionalUser = crudUserRepository.findById(userId);
+        if (meal != null && optionalUser.isPresent()) meal.setUser(optionalUser.get());
+        return meal;
     }
 
     @Override
@@ -44,12 +50,5 @@ public class DataJpaMealRepository implements MealRepositoryForDataJpa {
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return crudRepository.findAllByUserIdAndDateTimeGreaterThanEqualAndDateTimeLessThanOrderByDateTimeDesc(userId, startDateTime, endDateTime);
-    }
-
-    @Override
-    public Meal getWithUser(int id, int userId) {
-        Meal meal = get(id, userId);
-        if (meal != null) meal.setUser(crudUserRepository.getReferenceById(userId));
-        return meal;
     }
 }
