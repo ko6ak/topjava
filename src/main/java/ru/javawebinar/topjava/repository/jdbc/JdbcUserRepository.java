@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,12 +14,10 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import java.sql.*;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -34,7 +31,7 @@ public class JdbcUserRepository implements UserRepository {
         user.setName(rs.getString("NAME"));
         user.setEmail(rs.getString("EMAIL"));
         user.setPassword(rs.getString("PASSWORD"));
-        user.setRegistered(rs.getObject("REGISTERED", Date.class));
+        user.setRegistered(new Date(rs.getObject("REGISTERED", Timestamp.class).getTime()));
         user.setEnabled(rs.getBoolean("ENABLED"));
         user.setCaloriesPerDay(rs.getInt("CALORIES_PER_DAY"));
 
@@ -64,38 +61,19 @@ public class JdbcUserRepository implements UserRepository {
     @Transactional
     public User save(User user) {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
+        String str = user.getRoles().stream().map(Enum::toString).collect(Collectors.joining(", "));
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(parameterSource);
             user.setId(newKey.intValue());
-            StringBuilder sb = new StringBuilder();
-            for (Role r : user.getRoles()){
-                sb.append(r.toString());
-            }
-
-            jdbcTemplate.update("insert into user_roles (user_id, role) VALUES (?, ?)", user.getId(), user.getRoles().toArray(new Role[0])[0].toString());
+            jdbcTemplate.update("insert into user_roles (user_id, role) VALUES (?, ?)", user.id(), str);
+            return user;
         } else if (namedParameterJdbcTemplate.update("""
                    UPDATE users SET name=:name, email=:email, password=:password, 
                    registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id
                 """, parameterSource) == 0) {
             return null;
         }
-//
-//        jdbcTemplate.batchUpdate(
-//                "update users set left outer join  roles = ? where id = ?",
-//                new BatchPreparedStatementSetter() {
-//
-//                    public void setValues(PreparedStatement ps, int i)
-//                            throws SQLException {
-//                        ps.setBigDecimal(1, books.get(i).getPrice());
-//                        ps.setLong(2, books.get(i).getId());
-//                    }
-//
-//                    public int getBatchSize() {
-//                        return books.size();
-//                    }
-//
-//                });
-
+        jdbcTemplate.update("update user_roles set role = ? where user_id = ?", str, user.id());
         return user;
     }
 
@@ -107,7 +85,6 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User get(int id) {
-        System.out.println("JDBC");
         List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT OUTER JOIN USER_ROLES on USERS.ID = USER_ROLES.USER_ID WHERE id=?", CUSTOM_ROW_MAPPER, id);
         return DataAccessUtils.singleResult(users);
     }
