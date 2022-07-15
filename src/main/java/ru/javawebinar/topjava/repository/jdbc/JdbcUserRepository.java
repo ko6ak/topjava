@@ -34,10 +34,9 @@ public class JdbcUserRepository implements UserRepository {
         user.setRegistered(new Date(rs.getObject("REGISTERED", Timestamp.class).getTime()));
         user.setEnabled(rs.getBoolean("ENABLED"));
         user.setCaloriesPerDay(rs.getInt("CALORIES_PER_DAY"));
-
         String role = rs.getString("ROLE");
         if (Objects.isNull(role)) user.setRoles(Collections.emptySet());
-        else user.setRoles(Set.of(Role.valueOf(role)));
+        else user.setRoles(Arrays.stream(role.split(", ")).map(Role::valueOf).collect(Collectors.toSet()));
         return user;
     };
 

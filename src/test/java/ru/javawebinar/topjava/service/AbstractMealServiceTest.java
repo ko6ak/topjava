@@ -4,17 +4,16 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Set;
 
 import static java.time.LocalDateTime.of;
 import static org.junit.Assert.assertThrows;
@@ -111,11 +110,26 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void createWithException() throws Exception {
+    public void createWithExceptionJpa() throws Exception {
         Assume.assumeFalse(Arrays.stream(env.getActiveProfiles()).toList().contains("jdbc"));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new Meal(null, null, "Description", 300), USER_ID));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID));
+    }
+
+    @Test
+    public void createWithExceptionJdbc() throws Exception {
+        Assume.assumeTrue(Arrays.stream(env.getActiveProfiles()).toList().contains("jdbc"));
+        validateRootCause(ConstraintViolationException.class, () -> validateMeal(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300)));
+        validateRootCause(ConstraintViolationException.class, () -> validateMeal(new Meal(null, null, "Description", 300)));
+        validateRootCause(ConstraintViolationException.class, () -> validateMeal(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9)));
+        validateRootCause(ConstraintViolationException.class, () -> validateMeal(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001)));
+    }
+
+    private void validateMeal(Meal meal) {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<Meal>> violations = validator.validate(meal);
+        if (!violations.isEmpty()) throw new ConstraintViolationException(violations);
     }
 }
