@@ -33,5 +33,15 @@ public class SpringMain {
             System.out.println();
             System.out.println(mealController.getBetween(null, null, null, null));
         }
+
+//        try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
+//            appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+//            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+//            appCtx.refresh();
+//            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
+////            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN, Role.USER));
+//            adminUserController.update(new User(null, "wqe", "cccp@mail.ru", "password", Role.ADMIN, Role.USER), 100012);
+//            System.out.println(adminUserController.get(100012));
+//        }
     }
 }
