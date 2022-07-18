@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static ru.javawebinar.topjava.Profiles.JPA;
 
-@ActiveProfiles(JPA)
+@ActiveProfiles({JPA, "jpaCache"})
 public class JpaUserServiceTest extends AbstractUserServiceTest {
 
     @Autowired

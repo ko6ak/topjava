@@ -36,8 +36,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Before
     public void setup() {
-//        cacheManager.getCache("users").clear();
-        cacheManager = new NoOpCacheManager();
+        cacheManager.getCache("users").clear();
     }
 
     @Test
@@ -69,8 +68,15 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void get() {
-        User user = service.get(USER_ID);
-        USER_MATCHER.assertMatch(user, UserTestData.user);
+//        User user = service.get(USER_ID);
+        System.out.println(service.get(USER_ID));
+        System.out.println(service.get(USER_ID));
+        System.out.println(service.get(ADMIN_ID));
+        System.out.println(service.get(ADMIN_ID));
+        System.out.println(service.get(USER_ID));
+        System.out.println(service.get(ADMIN_ID));
+
+//        USER_MATCHER.assertMatch(user, UserTestData.user);
     }
 
     @Test
