@@ -1,12 +1,10 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.UserTestData;
@@ -68,15 +66,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void get() {
-//        User user = service.get(USER_ID);
-        System.out.println(service.get(USER_ID));
-        System.out.println(service.get(USER_ID));
-        System.out.println(service.get(ADMIN_ID));
-        System.out.println(service.get(ADMIN_ID));
-        System.out.println(service.get(USER_ID));
-        System.out.println(service.get(ADMIN_ID));
-
-//        USER_MATCHER.assertMatch(user, UserTestData.user);
+        User user = service.get(USER_ID);
+        USER_MATCHER.assertMatch(user, UserTestData.user);
     }
 
     @Test

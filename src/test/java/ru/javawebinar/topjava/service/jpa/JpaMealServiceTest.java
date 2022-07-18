@@ -12,6 +12,6 @@ import static java.time.LocalDateTime.of;
 import static ru.javawebinar.topjava.Profiles.JPA;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@ActiveProfiles(JPA)
+@ActiveProfiles({JPA, "jpaCache"})
 public class JpaMealServiceTest extends AbstractMealServiceTest {
 }
