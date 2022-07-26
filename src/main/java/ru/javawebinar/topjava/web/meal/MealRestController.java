@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -61,8 +62,9 @@ public class MealRestController extends AbstractMealController {
     }
 
     @GetMapping("/filter")
-    public List<MealTo> getBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
-        return super.getBetween(start.toLocalDate(), start.toLocalTime(), end.toLocalDate(), end.toLocalTime());
+    public List<MealTo> getBetween(@Nullable @RequestParam LocalDate startDate, @Nullable @RequestParam LocalTime startTime,
+                                   @Nullable @RequestParam LocalDate endDate, @Nullable @RequestParam LocalTime endTime) {
+        return super.getBetween(startDate, startTime, endDate, endTime);
     }
+    //    http://localhost:8080/topjava/rest/user/meals/filter?startDate=2020-01-30&startTime=10:00&endDate=2020-01-30&endTime=20:00
 }
