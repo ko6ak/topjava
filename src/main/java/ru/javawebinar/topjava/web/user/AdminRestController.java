@@ -61,4 +61,11 @@ public class AdminRestController extends AbstractUserController {
     public User getWithMeals(@PathVariable int id) {
         return super.getWithMeals(id);
     }
+
+    @PutMapping(value = "/{id}/enable")
+    public void enable(@PathVariable int id, @RequestParam String enable){
+        User user = super.get(id);
+        user.setEnabled(Boolean.parseBoolean(enable));
+        super.update(user, id);
+    }
 }

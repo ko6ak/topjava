@@ -1,31 +1,25 @@
-const userAjaxUrl = "admin/users/";
+const mealsAjaxUrl = "profile/meals/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
-    ajaxUrl: userAjaxUrl
+    ajaxUrl: mealsAjaxUrl
 };
 
 // $(document).ready(function () {
 $(function () {
     makeEditable(
-        $("#datatable").DataTable({
+        $("#mealstable").DataTable({
             "paging": false,
             "info": true,
             "columns": [
                 {
-                    "data": "name"
+                    "data": "dateTime"
                 },
                 {
-                    "data": "email"
+                    "data": "description"
                 },
                 {
-                    "data": "roles"
-                },
-                {
-                    "data": "enabled"
-                },
-                {
-                    "data": "registered"
+                    "data": "calories"
                 },
                 {
                     "defaultContent": "Edit",
@@ -39,16 +33,21 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })
     );
 });
 
-function checkEnable(id) {
-    let checkbox_value = !!$('input[type="checkbox"]').is(":checked")
-    $.put(ctx.ajaxUrl + id + "/enable", checkbox_value.serialize()).done(function (data) {
+let filterform = $('#filter');
+
+function clearFilter(){
+    filterform.find(":input").val("");
+}
+
+function filterTable() {
+    $.get(ctx.ajaxUrl + "filter", filterform.serialize()).done(function (data) {
         ctx.datatableApi.clear().rows.add(data).draw();
     });
 }
