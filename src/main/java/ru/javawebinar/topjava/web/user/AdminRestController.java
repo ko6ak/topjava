@@ -64,8 +64,11 @@ public class AdminRestController extends AbstractUserController {
 
     @PutMapping(value = "/{id}/enable")
     public void enable(@PathVariable int id, @RequestParam String enable){
+        System.out.println(enable);
         User user = super.get(id);
+        System.out.println(enable);
         user.setEnabled(Boolean.parseBoolean(enable));
         super.update(user, id);
+        System.out.println(super.get(id));
     }
 }

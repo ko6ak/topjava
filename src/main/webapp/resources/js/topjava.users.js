@@ -45,10 +45,3 @@ $(function () {
         })
     );
 });
-
-function checkEnable(id) {
-    let checkbox_value = !!$('input[type="checkbox"]').is(":checked")
-    $.put(ctx.ajaxUrl + id + "/enable", checkbox_value.serialize()).done(function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
-    });
-}
