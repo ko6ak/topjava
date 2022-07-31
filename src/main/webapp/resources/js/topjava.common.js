@@ -20,7 +20,7 @@ function makeEditable(datatableApi) {
             data: {"checkboxvalue":chk, "id":id}
         }).done(function () {
             // alert($(this).is(':checked').serialize());
-            // $("#editRow").modal("hide");
+            $("#editRow").modal("hide");
             updateTable();
             successNoty("Done");
         });
