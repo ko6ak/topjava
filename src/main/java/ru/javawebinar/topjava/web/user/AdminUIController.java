@@ -33,12 +33,11 @@ public class AdminUIController extends AbstractUserController {
         super.create(new User(null, name, email, password, Role.USER));
     }
 
-    @PostMapping("/enable")
-    public void enable(@RequestParam String id, @RequestParam String checkboxvalue){
-        System.out.println(id);
-        System.out.println(checkboxvalue);
-//        User user = super.get(id);
-//        user.setEnabled(Boolean.parseBoolean(enable));
-//        super.update(user, id);
+    @PostMapping("/status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@RequestParam int id, @RequestParam boolean checkboxvalue){
+        User user = super.get(id);
+        user.setEnabled(checkboxvalue);
+        super.update(user, id);
     }
 }

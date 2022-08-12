@@ -9,27 +9,18 @@ function makeEditable(datatableApi) {
         }
     });
 
-    $('input:checkbox').click(function(){
+    $("input#chkbx").click(function(){
         let chk = $(this).is(':checked');
         let id = $(this).closest('tr').attr("id");
-        // $.post(ctx.ajaxUrl + $(this).closest('tr').attr("id"), $(this).is(':checked').serialize())
 
         $.ajax({
             type: "POST",
-            url: ctx.ajaxUrl + "/enable",
+            url: ctx.ajaxUrl + "status",
             data: {"checkboxvalue":chk, "id":id}
         }).done(function () {
-            // alert($(this).is(':checked').serialize());
-            // $("#editRow").modal("hide");
             updateTable();
             successNoty("Done");
         });
-
-        if ($(this).is(':checked')) {
-            $(this).parent().css('color', 'green');
-        } else {
-            $(this).parent().css('color', '#000000');
-        }
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
