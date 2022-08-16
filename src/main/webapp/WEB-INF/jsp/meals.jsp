@@ -77,6 +77,8 @@
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
+                    <input id="datetimepicker" type="text" />
+
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
                         <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
@@ -111,13 +113,4 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
-<%--<script type="text/javascript">--%>
-<%--    &lt;%&ndash;const i18n = [];&ndash;%&gt;--%>
-<%--    &lt;%&ndash;i18n["addTitle"] = '<spring:message code="meal.add"/>';&ndash;%&gt;--%>
-<%--    &lt;%&ndash;i18n["editTitle"] = '<spring:message code="meal.edit"/>';&ndash;%&gt;--%>
-
-<%--&lt;%&ndash;    <c:forEach var="key" items='<%=new String[]{"common.deleted","common.saved","common.errorStatus","common.confirm"}%>'>&ndash;%&gt;--%>
-<%--&lt;%&ndash;    i18n["${key}"] = "<spring:message code="${key}"/>";&ndash;%&gt;--%>
-<%--&lt;%&ndash;    </c:forEach>&ndash;%&gt;--%>
-<%--</script>--%>
 </html>
