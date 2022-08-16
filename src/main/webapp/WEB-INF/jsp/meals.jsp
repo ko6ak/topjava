@@ -111,13 +111,13 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
-<script type="text/javascript">
-    const i18n = [];
-    i18n["addTitle"] = '<spring:message code="meal.add"/>';
-    i18n["editTitle"] = '<spring:message code="meal.edit"/>';
+<%--<script type="text/javascript">--%>
+<%--    &lt;%&ndash;const i18n = [];&ndash;%&gt;--%>
+<%--    &lt;%&ndash;i18n["addTitle"] = '<spring:message code="meal.add"/>';&ndash;%&gt;--%>
+<%--    &lt;%&ndash;i18n["editTitle"] = '<spring:message code="meal.edit"/>';&ndash;%&gt;--%>
 
-    <c:forEach var="key" items='<%=new String[]{"common.deleted","common.saved","common.errorStatus","common.confirm"}%>'>
-    i18n["${key}"] = "<spring:message code="${key}"/>";
-    </c:forEach>
-</script>
+<%--&lt;%&ndash;    <c:forEach var="key" items='<%=new String[]{"common.deleted","common.saved","common.errorStatus","common.confirm"}%>'>&ndash;%&gt;--%>
+<%--&lt;%&ndash;    i18n["${key}"] = "<spring:message code="${key}"/>";&ndash;%&gt;--%>
+<%--&lt;%&ndash;    </c:forEach>&ndash;%&gt;--%>
+<%--</script>--%>
 </html>

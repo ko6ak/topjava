@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.to.UserTo;
+import ru.javawebinar.topjava.util.Util;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -46,10 +47,7 @@ public class MealUIController extends AbstractMealController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> createOrUpdate(@Valid MealTo mealTo, BindingResult result) {
         if (result.hasErrors()) {
-            String errorFieldsMsg = result.getFieldErrors().stream()
-                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                    .collect(Collectors.joining("<br>"));
-            return ResponseEntity.unprocessableEntity().body(errorFieldsMsg);
+            return Util.errorsInFields(result);
         }
         if (mealTo.isNew()) {
             super.create(mealTo);
