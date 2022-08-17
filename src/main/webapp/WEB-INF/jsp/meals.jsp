@@ -19,11 +19,11 @@
                     <div class="row">
                         <div class="col-3">
                             <label for="startDate"><spring:message code="meal.startDate"/></label>
-                            <input class="form-control" type="date" name="startDate" id="startDate">
+                            <input class="form-control" type="text" name="startDate" id="startDate">
                         </div>
                         <div class="col-3">
                             <label for="endDate"><spring:message code="meal.endDate"/></label>
-                            <input class="form-control" type="date" name="endDate" id="endDate">
+                            <input class="form-control" type="text" name="endDate" id="endDate">
                         </div>
                         <div class="offset-2 col-2">
                             <label for="startTime"><spring:message code="meal.startTime"/></label>
@@ -77,12 +77,10 @@
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
-                    <input id="datetimepicker" type="text" />
-
                     <div class="form-group">
-                        <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
-                        <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
-                               placeholder="<spring:message code="meal.dateTime"/>">
+                        <label for="dateTime1" class="col-form-label"><spring:message code="meal.dateTime"/></label>
+                        <input type="hidden" class="form-control" id="dateTime" name="dateTime">
+                        <input type="text" class="form-control" id="dateTime1" name="dateTime1" placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
 
                     <div class="form-group">
@@ -113,4 +111,28 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<script type="text/javascript">
+    $('#dateTime1').datetimepicker({ format:'Y-m-d H:i' });
+    $.datetimepicker.setLocale('ru');
+
+    $('#startDate').datetimepicker({
+        format: 'd.m.Y',
+        onShow: function (ct) {
+            this.setOptions({
+                maxDate: $('#endDate').val() ? $('#endDate').val() : false, formatDate: 'd.m.Y'
+            })
+        },
+        timepicker: false
+    });
+    $('#endDate').datetimepicker({
+        format: 'd.m.Y',
+        onShow: function (ct) {
+            this.setOptions({
+                minDate: $('#startDate').val() ? $('#startDate').val() : false, formatDate: 'd.m.Y'
+            })
+        },
+        timepicker: false
+    });
+
+</script>
 </html>

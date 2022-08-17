@@ -23,7 +23,8 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            if (key === "dateTime") form.find("input[name='" + key + "1']").val(value.substring(0, 10) + " " + value.substring(11, 16));
+            else form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
     });
@@ -46,10 +47,12 @@ function updateTableByData(data) {
 }
 
 function save() {
+    let date = $('#dateTime1').val()
+    $('#dateTime').val(date.substring(0, 10) + "T" + date.substring(11, 16))
     $.ajax({
         type: "POST",
         url: ctx.ajaxUrl,
-        data: form.serialize()
+        data: form.find(':not(input[name=dateTime1])').serialize()
     }).done(function () {
         $("#editRow").modal("hide");
         ctx.updateTable();
