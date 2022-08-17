@@ -18,20 +18,22 @@
                 <form id="filter">
                     <div class="row">
                         <div class="col-3">
-                            <label for="startDate"><spring:message code="meal.startDate"/></label>
-                            <input class="form-control" type="text" name="startDate" id="startDate">
+                            <label for="startDate1"><spring:message code="meal.startDate"/></label>
+                            <input class="form-control" type="hidden" name="startDate" id="startDate">
+                            <input class="form-control" type="text" name="startDate1" id="startDate1">
                         </div>
                         <div class="col-3">
-                            <label for="endDate"><spring:message code="meal.endDate"/></label>
-                            <input class="form-control" type="text" name="endDate" id="endDate">
+                            <label for="endDate1"><spring:message code="meal.endDate"/></label>
+                            <input class="form-control" type="hidden" name="endDate" id="endDate">
+                            <input class="form-control" type="text" name="endDate1" id="endDate1">
                         </div>
                         <div class="offset-2 col-2">
                             <label for="startTime"><spring:message code="meal.startTime"/></label>
-                            <input class="form-control" type="time" name="startTime" id="startTime">
+                            <input class="form-control" type="text" name="startTime" id="startTime">
                         </div>
                         <div class="col-2">
                             <label for="endTime"><spring:message code="meal.endTime"/></label>
-                            <input class="form-control" type="time" name="endTime" id="endTime">
+                            <input class="form-control" type="text" name="endTime" id="endTime">
                         </div>
                     </div>
                 </form>
@@ -115,24 +117,42 @@
     $('#dateTime1').datetimepicker({ format:'Y-m-d H:i' });
     $.datetimepicker.setLocale('ru');
 
-    $('#startDate').datetimepicker({
+    $('#startDate1').datetimepicker({
         format: 'd.m.Y',
         onShow: function (ct) {
             this.setOptions({
-                maxDate: $('#endDate').val() ? $('#endDate').val() : false, formatDate: 'd.m.Y'
+                maxDate: $('#endDate1').val() ? $('#endDate1').val() : false, formatDate: 'd.m.Y'
             })
         },
         timepicker: false
     });
-    $('#endDate').datetimepicker({
+    $('#endDate1').datetimepicker({
         format: 'd.m.Y',
         onShow: function (ct) {
             this.setOptions({
-                minDate: $('#startDate').val() ? $('#startDate').val() : false, formatDate: 'd.m.Y'
+                minDate: $('#startDate1').val() ? $('#startDate1').val() : false, formatDate: 'd.m.Y'
             })
         },
         timepicker: false
     });
 
+    $('#startTime').datetimepicker({
+        format: 'H:i',
+        onShow: function (ct) {
+            this.setOptions({
+                maxTime: $('#endTime').val() ? $('#endTime').val() : false
+            })
+        },
+        datepicker: false
+    });
+    $('#endTime').datetimepicker({
+        format: 'H:i',
+        onShow: function (ct) {
+            this.setOptions({
+                minTime: $('#startTime').val() ? $('#startTime').val() : false
+            })
+        },
+        datepicker: false
+    });
 </script>
 </html>

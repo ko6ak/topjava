@@ -1,15 +1,28 @@
 const mealAjaxUrl = "profile/meals/";
 
-
+let form1 = $('#filter')
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
     ajaxUrl: mealAjaxUrl,
     updateTable: function () {
+
+        let temp = $('#startDate1').val();
+        if (temp !== "") {
+            temp = $('#startDate1').val().split(".")
+            $('#startDate').val(temp[2] + "-" + temp[1] + "-" + temp[0])
+        }
+
+        temp = $('#endDate1').val()
+        if (temp !== "") {
+            temp = $('#endDate1').val().split(".")
+            $('#endDate').val(temp[2] + "-" + temp[1] + "-" + temp[0])
+        }
+
         $.ajax({
             type: "GET",
             url: mealAjaxUrl + "filter",
-            data: $("#filter").serialize()
+            data: form1.find(':not(input[name=startDate1], input[name=endDate1])').serialize()
         }).done(updateTableByData);
     }
 }
