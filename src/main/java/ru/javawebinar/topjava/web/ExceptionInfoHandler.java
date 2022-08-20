@@ -20,12 +20,18 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Map;
+
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+
+    private static Map<String, String> MESSAGES_FROM_DATABASE = Map.of(
+            "users_unique_email_idx", "User with this email already exists",
+            "meals_unique_user_datetime_idx", "Meal with this date already exists");
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -37,6 +43,16 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
+        String rootMsg = ValidationUtil.getRootCause(e).getMessage();
+        if (rootMsg != null) {
+            String lowerCaseMsg = rootMsg.toLowerCase();
+            for (Map.Entry<String, String> entry : MESSAGES_FROM_DATABASE.entrySet()) {
+                if (lowerCaseMsg.contains(entry.getKey())) {
+                    log.error(VALIDATION_ERROR + " at request " + req.getRequestURL(), ValidationUtil.getRootCause(e));
+                    return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, entry.getValue());
+                }
+            }
+        }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }
 
