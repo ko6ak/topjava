@@ -26,5 +26,12 @@
                 </button>
             </form:form>
         </sec:authorize>
+<%--        <a href='${pageContext.request.contextPath}?language=ru'>ru</a>--%>
+<%--        <a href='${pageContext.request.contextPath}?language=en'>en</a>--%>
+        <select onchange="window.location.href = this.options[this.selectedIndex].value">
+            <option></option>
+            <option value="?language=ru">ru</option>
+            <option value="?language=en">en</option>
+        </select>
     </div>
 </nav>
