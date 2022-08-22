@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.util.ValidationUtil;
+import ru.javawebinar.topjava.util.exception.ErrorInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+
+import static ru.javawebinar.topjava.util.exception.ErrorType.VALIDATION_ERROR;
+import static ru.javawebinar.topjava.web.ExceptionInfoHandler.MESSAGES_FROM_DATABASE;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,9 +26,24 @@ public class GlobalExceptionHandler {
         Throwable rootCause = ValidationUtil.getRootCause(e);
 
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        ModelAndView mav = new ModelAndView("exception",
-                Map.of("exception", rootCause, "message", rootCause.toString(), "status", httpStatus));
-        mav.setStatus(httpStatus);
+        ModelAndView mav = null;
+
+        String rootMsg = rootCause.getMessage();
+        if (rootMsg != null) {
+            String lowerCaseMsg = rootMsg.toLowerCase();
+            for (Map.Entry<String, String> entry : MESSAGES_FROM_DATABASE.entrySet()) {
+                if (lowerCaseMsg.contains(entry.getKey())) {
+                    mav = new ModelAndView("exception",
+                            Map.of("exception", rootCause, "message", entry.getValue(), "status", httpStatus));
+                    mav.setStatus(httpStatus);
+                    return mav;
+                }
+            }
+        } else {
+            mav = new ModelAndView("exception",
+                    Map.of("exception", rootCause, "message", rootCause.toString(), "status", httpStatus));
+            mav.setStatus(httpStatus);
+        }
 
         // Interceptor is not invoked, put userTo
         AuthorizedUser authorizedUser = SecurityUtil.safeGet();

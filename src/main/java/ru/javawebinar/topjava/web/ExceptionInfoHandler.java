@@ -29,7 +29,7 @@ import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
-    private static Map<String, String> MESSAGES_FROM_DATABASE = Map.of(
+    public static Map<String, String> MESSAGES_FROM_DATABASE = Map.of(
             "users_unique_email_idx", "User with this email already exists",
             "meals_unique_user_datetime_idx", "Meal with this date already exists");
 

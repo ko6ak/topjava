@@ -6,12 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
+import static java.time.LocalDateTime.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -69,6 +76,30 @@ class MealRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.delete(REST_URL + ADMIN_MEAL_ID)
                 .with(userHttpBasic(user)))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    @Test
+    void createMealWithExistDate() throws Exception {
+        Meal newMeal = getNew();
+        newMeal.setDateTime(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0));
+        perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(newMeal)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    @Test
+    void updateMealWithExistDate() throws Exception {
+        Meal newMeal = meal1;
+        newMeal.setDateTime(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0));
+        perform(MockMvcRequestBuilders.put(REST_URL + MEAL1_ID).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(newMeal)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
